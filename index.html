@@ -13,13 +13,34 @@
       --accent: #f97316;
       --accent-soft: #fed7aa;
       --accent-strong: #fb923c;
+      --accent-alt: #22c55e;
+      --accent-blue: #38bdf8;
       --text-main: #f9fafb;
       --text-soft: #9ca3af;
+      --text-muted: #6b7280;
       --border-soft: #1f2937;
+      --border-strong: #4b5563;
+      --radius-xl: 32px;
       --radius-lg: 24px;
       --radius-md: 18px;
+      --radius-sm: 12px;
       --radius-pill: 999px;
       --shadow-soft: 0 24px 60px rgba(0, 0, 0, 0.7);
+      --shadow-strong: 0 30px 80px rgba(0, 0, 0, 0.9);
+      --glass: rgba(15, 23, 42, 0.82);
+      --glass-strong: rgba(15, 23, 42, 0.94);
+      --border-glow: rgba(248, 113, 22, 0.6);
+      --border-glow-soft: rgba(248, 113, 22, 0.25);
+      --accent-gradient: linear-gradient(120deg, #f97316, #facc15);
+      --accent-gradient-soft: linear-gradient(135deg, #f97316, #fb923c);
+      --accent-gradient-alt: linear-gradient(135deg, #22c55e, #38bdf8);
+      --danger: #ef4444;
+      --success: #22c55e;
+      --warning: #eab308;
+      --info: #38bdf8;
+      --transition-fast: 0.16s ease-out;
+      --transition-med: 0.22s ease-out;
+      --transition-slow: 0.35s ease-out;
     }
 
     * {
@@ -28,31 +49,43 @@
       padding: 0;
     }
 
+    html, body {
+      height: 100%;
+    }
+
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
         "Segoe UI", sans-serif;
-      background: radial-gradient(circle at top, #111827, #020617 55%, #000000);
+      background:
+        radial-gradient(circle at top, #111827, #020617 55%, #000000),
+        radial-gradient(circle at bottom, #020617, #000000 60%);
       color: var(--text-main);
       min-height: 100vh;
       display: flex;
       justify-content: center;
+      align-items: stretch;
       padding: 32px 16px 40px;
+      overflow-x: hidden;
     }
 
+    /* PAGE WRAPPER -------------------------------------------------------- */
     .page {
       width: 100%;
-      max-width: 1320px;
-      background: radial-gradient(circle at top left, #020617, #020617 40%, #020617);
-      border-radius: 32px;
+      max-width: 1360px;
+      background:
+        radial-gradient(circle at top left, #020617, #020617 40%, #020617),
+        radial-gradient(circle at bottom right, #020617, #020617 40%, #020617);
+      border-radius: var(--radius-xl);
       border: 1px solid rgba(148, 163, 184, 0.35);
       box-shadow: var(--shadow-soft);
       overflow: hidden;
       display: grid;
       grid-template-columns: minmax(0, 3.2fr) minmax(0, 2.6fr);
       position: relative;
+      isolation: isolate;
     }
 
-    @media (max-width: 960px) {
+    @media (max-width: 1080px) {
       .page {
         grid-template-columns: minmax(0, 1fr);
       }
@@ -71,15 +104,26 @@
       z-index: -1;
     }
 
+    .page::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 0% 100%, rgba(15, 23, 42, 0.6), transparent 60%),
+        radial-gradient(circle at 100% 0%, rgba(15, 23, 42, 0.6), transparent 60%);
+      mix-blend-mode: soft-light;
+      opacity: 0.7;
+      pointer-events: none;
+      z-index: -1;
+    }
+
     .left {
       padding: 26px 26px 26px 30px;
       border-right: 1px solid var(--border-soft);
       backdrop-filter: blur(18px);
-      background: linear-gradient(
-        135deg,
-        rgba(15, 23, 42, 0.96),
-        rgba(15, 23, 42, 0.92)
-      );
+      background:
+        linear-gradient(135deg, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.92)),
+        radial-gradient(circle at top left, rgba(15, 23, 42, 0.9), transparent 60%);
       position: relative;
       overflow: hidden;
     }
@@ -87,7 +131,9 @@
     .right {
       padding: 26px;
       backdrop-filter: blur(18px);
-      background: radial-gradient(circle at top right, #020617, #020617 45%, #020617);
+      background:
+        radial-gradient(circle at top right, #020617, #020617 45%, #020617),
+        radial-gradient(circle at bottom left, #020617, #020617 45%, #020617);
       position: relative;
       overflow: hidden;
     }
@@ -103,7 +149,18 @@
       pointer-events: none;
     }
 
-    /* Header / brand */
+    .right::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background:
+        radial-gradient(circle at 100% 0%, rgba(248, 113, 22, 0.18), transparent 55%),
+        radial-gradient(circle at 0% 100%, rgba(16, 185, 129, 0.18), transparent 55%);
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    /* HEADER / BRAND ------------------------------------------------------ */
     .header {
       display: flex;
       align-items: center;
@@ -120,8 +177,8 @@
     }
 
     .brand-logo {
-      width: 46px;
-      height: 46px;
+      width: 48px;
+      height: 48px;
       border-radius: 18px;
       background: conic-gradient(
         from 210deg,
@@ -140,6 +197,14 @@
       animation: logoGlow 4s ease-in-out infinite alternate;
     }
 
+    .brand-logo::before {
+      content: "";
+      position: absolute;
+      inset: 4px;
+      border-radius: 16px;
+      background: radial-gradient(circle at top, #020617, #020617 60%, #020617);
+    }
+
     .brand-logo-inner {
       width: 34px;
       height: 34px;
@@ -149,6 +214,8 @@
       align-items: center;
       justify-content: center;
       font-size: 20px;
+      position: relative;
+      z-index: 1;
     }
 
     @keyframes logoGlow {
@@ -187,7 +254,7 @@
     }
 
     .pill {
-      border-radius: 999px;
+      border-radius: var(--radius-pill);
       padding: 6px 12px;
       font-size: 11px;
       font-weight: 600;
@@ -210,7 +277,26 @@
       box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.35);
     }
 
-    /* Hero */
+    .pill-badge {
+      border-radius: var(--radius-pill);
+      padding: 4px 10px;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      color: #e5e7eb;
+      background: radial-gradient(circle at top left, #020617, #020617);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      opacity: 0.9;
+    }
+
+    .pill-badge span {
+      font-size: 12px;
+    }
+
+    /* HERO --------------------------------------------------------------- */
     .hero {
       margin-bottom: 18px;
       position: relative;
@@ -225,7 +311,7 @@
     }
 
     .hero-title span {
-      background: linear-gradient(120deg, #f97316, #facc15);
+      background: var(--accent-gradient);
       -webkit-background-clip: text;
       color: transparent;
     }
@@ -233,10 +319,15 @@
     .hero-subtitle {
       font-size: 14px;
       color: var(--text-soft);
-      max-width: 440px;
+      max-width: 460px;
     }
 
-    /* Filters row */
+    .hero-subtitle strong {
+      color: #e5e7eb;
+      font-weight: 600;
+    }
+
+    /* FILTERS ROW -------------------------------------------------------- */
     .filters-row {
       display: flex;
       flex-wrap: wrap;
@@ -252,7 +343,7 @@
       align-items: center;
       gap: 8px;
       padding: 6px 10px;
-      border-radius: 999px;
+      border-radius: var(--radius-pill);
       background: radial-gradient(circle at top left, #020617, #020617);
       border: 1px solid rgba(55, 65, 81, 0.9);
       box-shadow: 0 10px 25px rgba(15, 23, 42, 0.9);
@@ -273,6 +364,12 @@
       color: #e5e7eb;
       outline: none;
       padding-right: 4px;
+      cursor: pointer;
+    }
+
+    select option {
+      background: #020617;
+      color: #e5e7eb;
     }
 
     .category-tabs {
@@ -283,7 +380,7 @@
 
     .category-tab {
       padding: 6px 12px;
-      border-radius: 999px;
+      border-radius: var(--radius-pill);
       font-size: 12px;
       border: 1px solid rgba(55, 65, 81, 0.9);
       background: radial-gradient(circle at top left, #020617, #020617);
@@ -292,7 +389,7 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      transition: all 0.18s ease-out;
+      transition: all var(--transition-fast);
       box-shadow: 0 10px 25px rgba(15, 23, 42, 0.9);
     }
 
@@ -308,12 +405,12 @@
       transform: translateY(-1px);
     }
 
-    .category-tab:hover:not(.active)) {
+    .category-tab:hover:not(.active) {
       transform: translateY(-1px);
       border-color: rgba(148, 163, 184, 0.9);
     }
 
-    /* Recipes header */
+    /* RECIPES HEADER ------------------------------------------------------ */
     .recipes-section-header {
       display: flex;
       align-items: center;
@@ -337,7 +434,7 @@
       color: #9ca3af;
     }
 
-    /* Recipes grid */
+    /* RECIPES GRID -------------------------------------------------------- */
     .recipes-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -349,7 +446,7 @@
       z-index: 1;
     }
 
-    @media (max-width: 960px) {
+    @media (max-width: 1080px) {
       .recipes-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
@@ -361,6 +458,19 @@
       }
     }
 
+    .recipes-grid::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .recipes-grid::-webkit-scrollbar-track {
+      background: #020617;
+    }
+
+    .recipes-grid::-webkit-scrollbar-thumb {
+      background: #4b5563;
+      border-radius: 999px;
+    }
+
     .recipe-card {
       background: radial-gradient(circle at top, #020617, #020617 60%, #020617);
       border-radius: 18px;
@@ -370,8 +480,8 @@
       cursor: pointer;
       display: flex;
       flex-direction: column;
-      transition: transform 0.16s ease-out, box-shadow 0.16s ease-out,
-        border-color 0.16s ease-out;
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast),
+        border-color var(--transition-fast), background var(--transition-fast);
       position: relative;
     }
 
@@ -381,7 +491,7 @@
       inset: 0;
       background: radial-gradient(circle at top, rgba(248, 113, 22, 0.18), transparent 60%);
       opacity: 0;
-      transition: opacity 0.2s ease-out;
+      transition: opacity var(--transition-med);
       pointer-events: none;
     }
 
@@ -393,6 +503,7 @@
       transform: translateY(-4px) translateZ(0);
       box-shadow: 0 22px 60px rgba(0, 0, 0, 1);
       border-color: rgba(248, 113, 22, 0.9);
+      background: radial-gradient(circle at top, #020617, #020617 50%, #020617);
     }
 
     .recipe-image {
@@ -427,6 +538,7 @@
       align-items: center;
       gap: 6px;
       border: 1px solid rgba(148, 163, 184, 0.8);
+      backdrop-filter: blur(6px);
     }
 
     .recipe-badge span {
@@ -485,18 +597,19 @@
       color: #9ca3af;
     }
 
-    /* Right panel: visual cooking */
+    /* RIGHT PANEL: VISUAL COOKING ---------------------------------------- */
     .visual-shell {
       height: 100%;
       border-radius: 24px;
       background: radial-gradient(circle at top, #020617, #020617 45%, #020617);
       border: 1px solid rgba(55, 65, 81, 0.9);
-      box-shadow: 0 24px 60px rgba(0, 0, 0, 1);
+      box-shadow: var(--shadow-strong);
       padding: 16px 16px 18px;
       display: flex;
       flex-direction: column;
       position: relative;
       overflow: hidden;
+      isolation: isolate;
     }
 
     .visual-shell::before {
@@ -558,7 +671,7 @@
     }
 
     .btn-ghost {
-      border-radius: 999px;
+      border-radius: var(--radius-pill);
       padding: 6px 10px;
       font-size: 11px;
       border: 1px solid rgba(148, 163, 184, 0.7);
@@ -568,7 +681,7 @@
       gap: 6px;
       cursor: pointer;
       color: #e5e7eb;
-      transition: all 0.16s ease-out;
+      transition: all var(--transition-fast);
       box-shadow: 0 10px 25px rgba(15, 23, 42, 0.9);
     }
 
@@ -578,11 +691,11 @@
     }
 
     .btn-primary {
-      border-radius: 999px;
+      border-radius: var(--radius-pill);
       padding: 7px 14px;
       font-size: 11px;
       border: none;
-      background: linear-gradient(120deg, #f97316, #facc15);
+      background: var(--accent-gradient);
       color: #020617;
       font-weight: 700;
       display: inline-flex;
@@ -590,12 +703,16 @@
       gap: 6px;
       cursor: pointer;
       box-shadow: 0 16px 40px rgba(248, 113, 22, 0.9);
-      transition: transform 0.16s ease-out, box-shadow 0.16s ease-out;
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast);
     }
 
     .btn-primary:hover {
       transform: translateY(-1px);
       box-shadow: 0 22px 60px rgba(248, 113, 22, 1);
+    }
+
+    .btn-primary span {
+      font-size: 13px;
     }
 
     .visual-stage {
@@ -635,6 +752,7 @@
       font-size: 11px;
       opacity: 0.9;
       color: #9ca3af;
+      max-width: 260px;
     }
 
     .visual-time {
@@ -660,7 +778,7 @@
       filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.9));
     }
 
-    /* Ingredient animations */
+    /* INGREDIENT ANIMATIONS (classes only, JS later) ---------------------- */
     .animate-drop {
       animation: ingredientDrop 0.7s ease-out forwards;
     }
@@ -779,7 +897,7 @@
       }
     }
 
-    /* Bowl (complex) */
+    /* BOWL (visual only, JS later) ---------------------------------------- */
     .bowl {
       position: absolute;
       bottom: 18px;
@@ -875,7 +993,7 @@
       }
     }
 
-    /* Progress + ingredients list */
+    /* PROGRESS + INGREDIENTS MINI ---------------------------------------- */
     .visual-bottom-row {
       display: flex;
       align-items: flex-end;
@@ -899,7 +1017,7 @@
     .progress-bar {
       height: 100%;
       width: 0%;
-      background: linear-gradient(120deg, #f97316, #facc15);
+      background: var(--accent-gradient);
       border-radius: 999px;
       transition: width 0.25s ease-out;
       box-shadow: 0 0 20px rgba(248, 113, 22, 0.9);
@@ -917,7 +1035,7 @@
       color: #f97316;
     }
 
-    /* Final dish overlay */
+    /* FINAL DISH OVERLAY -------------------------------------------------- */
     .final-dish-overlay {
       position: absolute;
       inset: 0;
@@ -973,7 +1091,7 @@
       color: #9ca3af;
     }
 
-    /* Ingredients panel */
+    /* INGREDIENTS PANEL --------------------------------------------------- */
     .ingredients-panel {
       margin-top: 10px;
       border-radius: 16px;
@@ -985,6 +1103,19 @@
       font-size: 12px;
       position: relative;
       z-index: 1;
+    }
+
+    .ingredients-panel::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .ingredients-panel::-webkit-scrollbar-track {
+      background: #020617;
+    }
+
+    .ingredients-panel::-webkit-scrollbar-thumb {
+      background: #4b5563;
+      border-radius: 999px;
     }
 
     .ingredients-panel-title {
@@ -1139,7 +1270,7 @@
           <div class="visual-controls">
             <button class="btn-ghost" id="resetBtn">Reset</button>
             <button class="btn-primary" id="nextStepBtn">
-              Next ingredient →
+              <span>Next ingredient</span> →
             </button>
           </div>
         </div>
@@ -1201,442 +1332,2025 @@
       </div>
     </div>
   </div>
+<script>
+/* ============================================================
+   COOKING WITH TORAYA — FULL JAVASCRIPT ENGINE
+   PART 2 / 4 — ENGINE, ANIMATIONS, RENDERING, INTERACTIONS
+   ============================================================ */
 
-  <script>
-    // --- Recipe data (20 Moroccan + sample world recipes) --------------------
-    const recipesData = [
-      /* MOROCCO (20) – I’ll show a subset; you can copy/paste pattern to reach 20 */
-      {
-        id: "morocco-chicken-tagine-olives-lemon",
-        name: "Chicken Tagine with Olives & Preserved Lemon",
-        emoji: "🍲",
-        meal: "dinner",
-        course: "main",
-        country: "morocco",
-        countryName: "Morocco",
-        difficulty: "Medium",
-        time: "1 h 15 min",
-        oven: "180°C · 45–60 min (or stovetop)",
-        imageUrl:
-          "https://images.unsplash.com/photo-1604908176997-1251884b08a3?auto=format&fit=crop&w=900&q=80",
-        method:
-          "Marinate chicken with spices, garlic and olive oil. Layer onions in the tagine, add chicken, preserved lemon and olives. Cook slowly over low heat or in the oven until the chicken is tender and the sauce is rich.",
-        ingredients: [
-          { name: "Chicken pieces", amount: "800 g", icon: "🍗", animation: "drop" },
-          { name: "Onions", amount: "2, sliced", icon: "🧅", animation: "sprinkle" },
-          { name: "Preserved lemon", amount: "1, sliced", icon: "🍋", animation: "crack" },
-          { name: "Green olives", amount: "½ cup", icon: "🫒", animation: "drop" },
-          { name: "Garlic cloves", amount: "3, minced", icon: "🧄", animation: "sprinkle" },
-          { name: "Ginger, turmeric, saffron", amount: "2 tsp total", icon: "🧂", animation: "sprinkle" },
-          { name: "Olive oil", amount: "3 tbsp", icon: "🫒", animation: "pour" }
-        ]
-      },
-      {
-        id: "morocco-lamb-prune-tagine",
-        name: "Lamb Tagine with Prunes & Almonds",
-        emoji: "🍖",
-        meal: "dinner",
-        course: "main",
-        country: "morocco",
-        countryName: "Morocco",
-        difficulty: "Medium",
-        time: "1 h 45 min",
-        oven: "170°C · 1–1.5 h",
-        imageUrl:
-          "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=900&q=80",
-        method:
-          "Brown lamb with onions and spices, then simmer with water until tender. Simmer prunes with a little sauce and honey, then finish by topping the lamb with prunes and toasted almonds.",
-        ingredients: [
-          { name: "Lamb pieces", amount: "1 kg", icon: "🍖", animation: "drop" },
-          { name: "Onions", amount: "2, chopped", icon: "🧅", animation: "sprinkle" },
-          { name: "Prunes", amount: "250 g", icon: "🍇", animation: "drop" },
-          { name: "Toasted almonds", amount: "½ cup", icon: "🌰", animation: "sprinkle" },
-          { name: "Cinnamon stick", amount: "1", icon: "🧂", animation: "sprinkle" },
-          { name: "Ginger & turmeric", amount: "2 tsp", icon: "🧂", animation: "sprinkle" },
-          { name: "Honey", amount: "2 tbsp", icon: "🍯", animation: "pour" }
-        ]
-      },
-      {
-        id: "morocco-vegetable-couscous",
-        name: "Seven-Vegetable Couscous",
-        emoji: "🥗",
-        meal: "lunch",
-        course: "main",
-        country: "morocco",
-        countryName: "Morocco",
-        difficulty: "Medium",
-        time: "1 h",
-        oven: "Steamer or pot · No oven",
-        imageUrl:
-          "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=900&q=80",
-        method:
-          "Steam couscous over a pot of simmering broth. Cook vegetables and chickpeas in the broth with spices. Fluff the couscous with butter or olive oil and serve with the vegetables and broth on top.",
-        ingredients: [
-          { name: "Couscous grains", amount: "2 cups", icon: "🍚", animation: "pour" },
-          { name: "Carrots", amount: "2, sliced", icon: "🥕", animation: "drop" },
-          { name: "Zucchini", amount: "2, sliced", icon: "🥒", animation: "drop" },
-          { name: "Pumpkin or squash", amount: "200 g", icon: "🎃", animation: "drop" },
-          { name: "Chickpeas", amount: "1 cup, cooked", icon: "🧆", animation: "pour" },
-          { name: "Cabbage", amount: "¼ head", icon: "🥬", animation: "drop" },
-          { name: "Turnip", amount: "1–2, chunks", icon: "🥔", animation: "drop" },
-          { name: "Ras el hanout & spices", amount: "2 tsp", icon: "🧂", animation: "sprinkle" }
-        ]
-      },
-      {
-        id: "morocco-harira-soup",
-        name: "Harira – Ramadan Soup",
-        emoji: "🥣",
-        meal: "dinner",
-        course: "main",
-        country: "morocco",
-        countryName: "Morocco",
-        difficulty: "Medium",
-        time: "1 h",
-        oven: "Stovetop simmer · 45–60 min",
-        imageUrl:
-          "https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=900&q=80",
-        method:
-          "Cook meat with onions, tomatoes, lentils and spices. Add water and simmer until tender, then add chickpeas, vermicelli and the flour mixture to thicken. Finish with fresh herbs and lemon.",
-        ingredients: [
-          { name: "Beef or lamb cubes", amount: "200 g", icon: "🥩", animation: "drop" },
-          { name: "Tomatoes", amount: "3, grated", icon: "🍅", animation: "pour" },
-          { name: "Lentils", amount: "½ cup", icon: "🫘", animation: "pour" },
-          { name: "Chickpeas", amount: "½ cup, cooked", icon: "🧆", animation: "pour" },
-          { name: "Vermicelli", amount: "½ cup", icon: "🍝", animation: "drop" },
-          { name: "Coriander & parsley", amount: "½ cup, chopped", icon: "🌿", animation: "sprinkle" },
-          { name: "Flour & water mixture", amount: "To thicken", icon: "🥣", animation: "pour" }
-        ]
-      },
-      {
-        id: "morocco-msemen",
-        name: "Msemen – Layered Moroccan Pancakes",
-        emoji: "🥞",
-        meal: "breakfast",
-        course: "snack",
-        country: "morocco",
-        countryName: "Morocco",
-        difficulty: "Medium",
-        time: "45 min",
-        oven: "Pan · Medium heat",
-        imageUrl:
-          "https://images.unsplash.com/photo-1528207776546-365bb710ee93?auto=format&fit=crop&w=900&q=80",
-        method:
-          "Prepare a soft dough, divide into balls and rest. Flatten each ball with oil and semolina, fold into a square and cook on a hot pan until golden and crispy on the outside.",
-        ingredients: [
-          { name: "Flour", amount: "3 cups", icon: "🌾", animation: "pour" },
-          { name: "Fine semolina", amount: "½ cup", icon: "🌾", animation: "sprinkle" },
-          { name: "Water", amount: "As needed", icon: "💧", animation: "pour" },
-          { name: "Salt", amount: "1 tsp", icon: "🧂", animation: "sprinkle" },
-          { name: "Oil & butter", amount: "For folding and cooking", icon: "🧈", animation: "pour" }
-        ]
-      },
+/* ------------------------------------------------------------
+   DOM REFERENCES
+------------------------------------------------------------ */
+const recipesGrid = document.getElementById("recipesGrid");
+const recipesCount = document.getElementById("recipesCount");
+const countrySelect = document.getElementById("countrySelect");
+const mealTabs = document.getElementById("mealTabs");
 
-      /* ...continue adding Moroccan recipes up to 20 using same pattern... */
+const visualRecipeTitle = document.getElementById("visualRecipeTitle");
+const visualRecipeMeta = document.getElementById("visualRecipeMeta");
+const visualStepLabel = document.getElementById("visualStepLabel");
+const visualHint = document.getElementById("visualHint");
+const visualTimeBox = document.getElementById("visualTimeBox");
 
-      /* WORLD SAMPLE – Japan, USA, Italy, etc. */
-      {
-        id: "japan-sushi-platter",
-        name: "Assorted Sushi Platter",
-        emoji: "🍣",
-        meal: "dinner",
-        course: "main",
-        country: "japan",
-        countryName: "Japan",
-        difficulty: "Hard",
-        time: "1 h 30 min",
-        oven: "No oven · Rice cooker",
-        imageUrl:
-          "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=900&q=80",
-        method:
-          "Cook sushi rice and season with vinegar. Prepare fillings like fish, cucumber and avocado. Roll maki and shape nigiri, then slice and arrange on a platter.",
-        ingredients: [
-          { name: "Sushi rice", amount: "2 cups", icon: "🍚", animation: "pour" },
-          { name: "Rice vinegar mix", amount: "¼ cup", icon: "🥣", animation: "pour" },
-          { name: "Fresh fish", amount: "300 g", icon: "🐟", animation: "drop" },
-          { name: "Nori sheets", amount: "6–8", icon: "🟩", animation: "slide" },
-          { name: "Cucumber & avocado", amount: "Sliced", icon: "🥒", animation: "sprinkle" }
-        ]
-      },
-      {
-        id: "usa-burger-classic",
-        name: "Classic Cheeseburger",
-        emoji: "🍔",
-        meal: "dinner",
-        course: "main",
-        country: "usa",
-        countryName: "United States",
-        difficulty: "Easy",
-        time: "30 min",
-        oven: "Grill or pan · Medium-high",
-        imageUrl:
-          "https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=900&q=80",
-        method:
-          "Shape seasoned beef into patties, grill or pan-sear until cooked, then top with cheese and assemble with bun and toppings.",
-        ingredients: [
-          { name: "Ground beef", amount: "400 g", icon: "🥩", animation: "drop" },
-          { name: "Cheese slices", amount: "4", icon: "🧀", animation: "slide" },
-          { name: "Burger buns", amount: "4", icon: "🍞", animation: "slide" },
-          { name: "Lettuce, tomato, onion", amount: "For topping", icon: "🥬", animation: "sprinkle" },
-          { name: "Sauces", amount: "Ketchup, mayo, mustard", icon: "🧂", animation: "pour" }
-        ]
-      },
-      {
-        id: "italy-margherita-pizza",
-        name: "Margherita Pizza",
-        emoji: "🍕",
-        meal: "dinner",
-        course: "main",
-        country: "italy",
-        countryName: "Italy",
-        difficulty: "Medium",
-        time: "1 h",
-        oven: "250°C · 8–12 min",
-        imageUrl:
-          "https://images.unsplash.com/photo-1548365328-9daaf8b1c7ae?auto=format&fit=crop&w=900&q=80",
-        method:
-          "Stretch pizza dough, spread tomato sauce, add mozzarella and basil, then bake in a very hot oven until bubbly and golden.",
-        ingredients: [
-          { name: "Pizza dough", amount: "1 ball", icon: "🍞", animation: "slide" },
-          { name: "Tomato sauce", amount: "½ cup", icon: "🍅", animation: "pour" },
-          { name: "Mozzarella", amount: "150 g", icon: "🧀", animation: "drop" },
-          { name: "Fresh basil", amount: "Handful", icon: "🌿", animation: "sprinkle" },
-          { name: "Olive oil", amount: "1 tbsp", icon: "🫒", animation: "pour" }
-        ]
-      }
+const ingredientObject = document.getElementById("ingredientObject");
+const bowlFill = document.getElementById("bowlFill");
+const progressBar = document.getElementById("progressBar");
+const ingredientsMini = document.getElementById("ingredientsMini");
+const ingredientsList = document.getElementById("ingredientsList");
 
-      /* Add more world recipes here following the same structure
-         until you reach 30+ total world recipes and 20 Moroccan recipes. */
-    ];
+const finalDishOverlay = document.getElementById("finalDishOverlay");
+const finalDishImg = document.getElementById("finalDishImg");
 
-    // --- State ---------------------------------------------------------------
-    let currentRecipe = null;
-    let currentStepIndex = -1;
+const nextStepBtn = document.getElementById("nextStepBtn");
+const resetBtn = document.getElementById("resetBtn");
 
-    // --- DOM references ------------------------------------------------------
-    const recipesGrid = document.getElementById("recipesGrid");
-    const recipesCount = document.getElementById("recipesCount");
-    const countrySelect = document.getElementById("countrySelect");
-    const mealTabs = document.getElementById("mealTabs");
+/* ------------------------------------------------------------
+   STATE
+------------------------------------------------------------ */
+let currentRecipe = null;
+let currentStepIndex = -1;
+let activeMeal = "all";
 
-    const visualRecipeTitle = document.getElementById("visualRecipeTitle");
-    const visualRecipeMeta = document.getElementById("visualRecipeMeta");
-    const visualStepLabel = document.getElementById("visualStepLabel");
-    const visualHint = document.getElementById("visualHint");
-    const visualTimeBox = document.getElementById("visualTimeBox");
+/* ------------------------------------------------------------
+   FILTERING — COUNTRY + CATEGORY
+------------------------------------------------------------ */
+mealTabs.addEventListener("click", (e) => {
+  const tab = e.target.closest(".category-tab");
+  if (!tab) return;
 
-    const ingredientObject = document.getElementById("ingredientObject");
-    const bowlFill = document.getElementById("bowlFill");
-    const progressBar = document.getElementById("progressBar");
-    const ingredientsMini = document.getElementById("ingredientsMini");
-    const ingredientsList = document.getElementById("ingredientsList");
+  document.querySelectorAll(".category-tab")
+    .forEach((t) => t.classList.remove("active"));
 
-    const finalDishOverlay = document.getElementById("finalDishOverlay");
-    const finalDishImg = document.getElementById("finalDishImg");
+  tab.classList.add("active");
+  activeMeal = tab.dataset.meal;
 
-    const nextStepBtn = document.getElementById("nextStepBtn");
-    const resetBtn = document.getElementById("resetBtn");
+  renderRecipes();
+});
 
-    // --- Filtering -----------------------------------------------------------
-    let activeMeal = "all";
+countrySelect.addEventListener("change", () => {
+  renderRecipes();
+});
 
-    mealTabs.addEventListener("click", (e) => {
-      const tab = e.target.closest(".category-tab");
-      if (!tab) return;
+/* ------------------------------------------------------------
+   RENDER RECIPES GRID
+------------------------------------------------------------ */
+function renderRecipes() {
+  const selectedCountry = countrySelect.value;
 
-      document
-        .querySelectorAll(".category-tab")
-        .forEach((t) => t.classList.remove("active"));
+  const filtered = recipesData.filter((r) => {
+    const matchCountry = selectedCountry === "all" || r.country === selectedCountry;
+    const matchMeal = activeMeal === "all" || r.meal === activeMeal;
+    return matchCountry && matchMeal;
+  });
 
-      tab.classList.add("active");
-      activeMeal = tab.dataset.meal;
-      renderRecipes();
-    });
+  recipesGrid.innerHTML = "";
+  recipesCount.textContent = `${filtered.length} recipes`;
 
-    countrySelect.addEventListener("change", () => {
-      renderRecipes();
-    });
+  filtered.forEach((recipe) => {
+    const card = document.createElement("div");
+    card.className = "recipe-card";
 
-    // --- Render recipes ------------------------------------------------------
-    function renderRecipes() {
-      const selectedCountry = countrySelect.value;
-
-      const filtered = recipesData.filter((r) => {
-        const matchCountry =
-          selectedCountry === "all" || r.country === selectedCountry;
-        const matchMeal = activeMeal === "all" || r.meal === activeMeal;
-        return matchCountry && matchMeal;
-      });
-
-      recipesGrid.innerHTML = "";
-      recipesCount.textContent = `${filtered.length} recipes`;
-
-      filtered.forEach((recipe) => {
-        const card = document.createElement("div");
-        card.className = "recipe-card";
-        card.innerHTML = `
-          <div class="recipe-image">
-            <img src="${recipe.imageUrl}" alt="${recipe.name}" />
-            <div class="recipe-badge"><span>${recipe.emoji}</span> ${recipe.meal}</div>
-          </div>
-          <div class="recipe-body">
-            <div class="recipe-name">${recipe.name}</div>
-            <div class="recipe-meta-row">
-              <div class="recipe-meta-left">
-                <div class="meta-pill">
-                  <span class="meta-dot"></span>${recipe.difficulty}
-                </div>
-                <div>${recipe.time}</div>
-              </div>
-              <div class="recipe-country">${recipe.countryName}</div>
+    card.innerHTML = `
+      <div class="recipe-image">
+        <img src="${recipe.imageUrl}" alt="${recipe.name}" />
+        <div class="recipe-badge"><span>${recipe.emoji}</span> ${recipe.meal}</div>
+      </div>
+      <div class="recipe-body">
+        <div class="recipe-name">${recipe.name}</div>
+        <div class="recipe-meta-row">
+          <div class="recipe-meta-left">
+            <div class="meta-pill">
+              <span class="meta-dot"></span>${recipe.difficulty}
             </div>
+            <div>${recipe.time}</div>
           </div>
-        `;
-        card.addEventListener("click", () => loadRecipe(recipe));
-        recipesGrid.appendChild(card);
-      });
-    }
-
-    renderRecipes();
-
-    // --- Load recipe ---------------------------------------------------------
-    function loadRecipe(recipe) {
-      currentRecipe = recipe;
-      currentStepIndex = -1;
-
-      visualRecipeTitle.innerHTML = `<span>${recipe.emoji}</span> ${recipe.name}`;
-      visualRecipeMeta.textContent = `${recipe.time} · ${recipe.oven} · ${recipe.difficulty}`;
-      visualTimeBox.innerHTML = `<strong>${recipe.time}</strong><span>${recipe.oven}</span>`;
-
-      finalDishOverlay.classList.add("hidden");
-      ingredientObject.style.opacity = 0;
-      ingredientObject.className = "ingredient-object";
-      bowlFill.className = "bowl-fill";
-
-      ingredientsList.innerHTML = recipe.ingredients
-        .map(
-          (ing) => `
-        <div class="ingredient-row">
-          <div class="ingredient-left">
-            <div class="ingredient-icon">${ing.icon}</div>
-            <div class="ingredient-name">${ing.name}</div>
-          </div>
-          <div class="ingredient-amount">${ing.amount}</div>
+          <div class="recipe-country">${recipe.countryName}</div>
         </div>
-      `
-        )
-        .join("");
+      </div>
+    `;
 
-      ingredientsMini.innerHTML = `<span>0 / ${recipe.ingredients.length}</span> ingredients added`;
-      visualStepLabel.textContent = "Click Next to begin";
-      visualHint.textContent = recipe.method;
+    card.addEventListener("click", () => loadRecipe(recipe));
+    recipesGrid.appendChild(card);
+  });
+}
 
-      progressBar.style.width = "0%";
-    }
+/* ------------------------------------------------------------
+   LOAD RECIPE INTO RIGHT PANEL
+------------------------------------------------------------ */
+function loadRecipe(recipe) {
+  currentRecipe = recipe;
+  currentStepIndex = -1;
 
-    // --- Next step -----------------------------------------------------------
-    nextStepBtn.addEventListener("click", () => {
-      if (!currentRecipe) return;
+  visualRecipeTitle.innerHTML = `<span>${recipe.emoji}</span> ${recipe.name}`;
+  visualRecipeMeta.textContent = `${recipe.time} · ${recipe.oven} · ${recipe.difficulty}`;
+  visualTimeBox.innerHTML = `<strong>${recipe.time}</strong><span>${recipe.oven}</span>`;
 
-      currentStepIndex++;
+  finalDishOverlay.classList.add("hidden");
+  ingredientObject.style.opacity = 0;
+  ingredientObject.className = "ingredient-object";
+  bowlFill.className = "bowl-fill";
 
-      if (currentStepIndex >= currentRecipe.ingredients.length) {
-        showFinalDish();
-        return;
-      }
+  ingredientsList.innerHTML = recipe.ingredients
+    .map(
+      (ing) => `
+      <div class="ingredient-row">
+        <div class="ingredient-left">
+          <div class="ingredient-icon">${ing.icon}</div>
+          <div class="ingredient-name">${ing.name}</div>
+        </div>
+        <div class="ingredient-amount">${ing.amount}</div>
+      </div>
+    `
+    )
+    .join("");
 
-      playCurrentStepAnimation();
-    });
+  ingredientsMini.innerHTML = `<span>0 / ${recipe.ingredients.length}</span> ingredients added`;
+  visualStepLabel.textContent = "Click Next to begin";
+  visualHint.textContent = recipe.method;
 
-    // --- Animation logic -----------------------------------------------------
-    function playCurrentStepAnimation() {
-      const ing = currentRecipe.ingredients[currentStepIndex];
+  progressBar.style.width = "0%";
+}
 
-      visualStepLabel.textContent = `Step ${currentStepIndex + 1} · Add ${
-        ing.name
-      }`;
-      visualHint.textContent = ing.amount;
+/* ------------------------------------------------------------
+   NEXT STEP BUTTON
+------------------------------------------------------------ */
+nextStepBtn.addEventListener("click", () => {
+  if (!currentRecipe) return;
 
-      const progress = (currentStepIndex + 1) / currentRecipe.ingredients.length;
+  currentStepIndex++;
 
-      bowlFill.classList.add("visible");
-      bowlFill.classList.remove(
-        "level-1",
-        "level-2",
-        "level-3",
-        "level-4",
-        "level-5"
-      );
+  if (currentStepIndex >= currentRecipe.ingredients.length) {
+    showFinalDish();
+    return;
+  }
 
-      if (progress <= 0.2) bowlFill.classList.add("level-1");
-      else if (progress <= 0.4) bowlFill.classList.add("level-2");
-      else if (progress <= 0.6) bowlFill.classList.add("level-3");
-      else if (progress <= 0.8) bowlFill.classList.add("level-4");
-      else bowlFill.classList.add("level-5");
+  playCurrentStepAnimation();
+});
 
-      ingredientObject.style.opacity = 1;
-      ingredientObject.textContent = ing.icon;
-      ingredientObject.className = "ingredient-object";
+/* ------------------------------------------------------------
+   INGREDIENT ANIMATION ENGINE
+------------------------------------------------------------ */
+function playCurrentStepAnimation() {
+  const ing = currentRecipe.ingredients[currentStepIndex];
 
-      const animClass =
-        ing.animation === "crack"
-          ? "animate-crack"
-          : ing.animation === "pour"
-          ? "animate-pour"
-          : ing.animation === "sprinkle"
-          ? "animate-sprinkle"
-          : ing.animation === "slide"
-          ? "animate-slide"
-          : ing.animation === "spin"
-          ? "animate-spin"
-          : "animate-drop";
+  visualStepLabel.textContent = `Step ${currentStepIndex + 1} · Add ${ing.name}`;
+  visualHint.textContent = ing.amount;
 
-      void ingredientObject.offsetWidth;
-      ingredientObject.classList.add(animClass);
+  const progress = (currentStepIndex + 1) / currentRecipe.ingredients.length;
 
-      const bowl = document.querySelector(".bowl");
-      bowl.classList.remove("swirl", "pulse");
-      void bowl.offsetWidth;
-      bowl.classList.add(progress < 1 ? "swirl" : "pulse");
+  bowlFill.classList.add("visible");
+  bowlFill.classList.remove("level-1", "level-2", "level-3", "level-4", "level-5");
 
-      progressBar.style.width = `${progress * 100}%`;
-      ingredientsMini.innerHTML = `<span>${currentStepIndex + 1} / ${
-        currentRecipe.ingredients.length
-      }</span> ingredients added`;
+  if (progress <= 0.2) bowlFill.classList.add("level-1");
+  else if (progress <= 0.4) bowlFill.classList.add("level-2");
+  else if (progress <= 0.6) bowlFill.classList.add("level-3");
+  else if (progress <= 0.8) bowlFill.classList.add("level-4");
+  else bowlFill.classList.add("level-5");
 
-      if (currentStepIndex === currentRecipe.ingredients.length - 1) {
-        showFinalDish();
-      }
-    }
+  ingredientObject.style.opacity = 1;
+  ingredientObject.textContent = ing.icon;
+  ingredientObject.className = "ingredient-object";
 
-    // --- Final dish ----------------------------------------------------------
-    function showFinalDish() {
-      finalDishOverlay.classList.remove("hidden");
-      finalDishImg.src = currentRecipe.imageUrl;
-      finalDishImg.alt = currentRecipe.name;
+  const animClass =
+    ing.animation === "crack"
+      ? "animate-crack"
+      : ing.animation === "pour"
+      ? "animate-pour"
+      : ing.animation === "sprinkle"
+      ? "animate-sprinkle"
+      : ing.animation === "slide"
+      ? "animate-slide"
+      : ing.animation === "spin"
+      ? "animate-spin"
+      : "animate-drop";
 
-      visualStepLabel.textContent = "All steps complete";
-      visualHint.textContent = "Your dish is ready!";
-    }
+  void ingredientObject.offsetWidth;
+  ingredientObject.classList.add(animClass);
 
-    // --- Reset ---------------------------------------------------------------
-    resetBtn.addEventListener("click", resetCooking);
+  const bowl = document.querySelector(".bowl");
+  bowl.classList.remove("swirl", "pulse");
+  void bowl.offsetWidth;
+  bowl.classList.add(progress < 1 ? "swirl" : "pulse");
 
-    function resetCooking() {
-      currentStepIndex = -1;
-      ingredientObject.style.opacity = 0;
-      ingredientObject.className = "ingredient-object";
-      bowlFill.className = "bowl-fill";
-      progressBar.style.width = "0%";
+  progressBar.style.width = `${progress * 100}%`;
+  ingredientsMini.innerHTML = `<span>${currentStepIndex + 1} / ${
+    currentRecipe.ingredients.length
+  }</span> ingredients added`;
 
-      if (currentRecipe) {
-        ingredientsMini.innerHTML = `<span>0 / ${currentRecipe.ingredients.length}</span> ingredients added`;
-        visualStepLabel.textContent = "Click Next to begin";
-        visualHint.textContent = currentRecipe.method;
-        finalDishOverlay.classList.add("hidden");
-      } else {
-        ingredientsMini.innerHTML = `<span>0 / 0</span> ingredients added`;
-      }
-    }
-  </script>
+  if (currentStepIndex === currentRecipe.ingredients.length - 1) {
+    showFinalDish();
+  }
+}
+
+/* ------------------------------------------------------------
+   FINAL DISH OVERLAY
+------------------------------------------------------------ */
+function showFinalDish() {
+  finalDishOverlay.classList.remove("hidden");
+  finalDishImg.src = currentRecipe.imageUrl;
+  finalDishImg.alt = currentRecipe.name;
+
+  visualStepLabel.textContent = "All steps complete";
+  visualHint.textContent = "Your dish is ready!";
+}
+
+/* ------------------------------------------------------------
+   RESET COOKING
+------------------------------------------------------------ */
+resetBtn.addEventListener("click", resetCooking);
+
+function resetCooking() {
+  currentStepIndex = -1;
+  ingredientObject.style.opacity = 0;
+  ingredientObject.className = "ingredient-object";
+  bowlFill.className = "bowl-fill";
+  progressBar.style.width = "0%";
+
+  if (currentRecipe) {
+    ingredientsMini.innerHTML = `<span>0 / ${currentRecipe.ingredients.length}</span> ingredients added`;
+    visualStepLabel.textContent = "Click Next to begin";
+    visualHint.textContent = currentRecipe.method;
+    finalDishOverlay.classList.add("hidden");
+  } else {
+    ingredientsMini.innerHTML = `<span>0 / 0</span> ingredients added`;
+  }
+}
+
+/* ------------------------------------------------------------
+   INITIAL RENDER
+------------------------------------------------------------ */
+renderRecipes();
+/* ------------------------------------------------------------
+   PART 3 / 4 — RECIPES DATA (MOROCCO — 20 RECIPES)
+   Append directly after PART 2 inside the same <script> tag.
+------------------------------------------------------------ */
+
+const recipesData = [
+  /* 1. Moroccan Tagine with Preserved Lemon & Olives */
+  {
+    name: "Chicken Tagine with Preserved Lemon & Olives",
+    emoji: "🍋",
+    country: "morocco",
+    countryName: "Morocco",
+    meal: "dinner",
+    time: "1h 20m",
+    oven: "Simmer · Low heat",
+    difficulty: "Intermediate",
+    imageUrl:
+      "https://images.pexels.com/photos/4109990/pexels-photo-4109990.jpeg",
+    method:
+      "Brown the chicken, then simmer gently with onions, spices, preserved lemon, and olives until tender and aromatic.",
+    ingredients: [
+      {
+        icon: "🍗",
+        name: "Chicken thighs",
+        amount: "6 pieces, bone-in",
+        animation: "drop",
+      },
+      {
+        icon: "🧅",
+        name: "Onions, sliced",
+        amount: "2 medium",
+        animation: "slide",
+      },
+      {
+        icon: "🧄",
+        name: "Garlic cloves",
+        amount: "4 cloves, minced",
+        animation: "sprinkle",
+      },
+      {
+        icon: "🧂",
+        name: "Ground ginger",
+        amount: "1 tsp",
+        animation: "sprinkle",
+      },
+      {
+        icon: "🧂",
+        name: "Turmeric",
+        amount: "1 tsp",
+        animation: "sprinkle",
+      },
+      {
+        icon: "🧂",
+        name: "Paprika",
+        amount: "1 tsp",
+        animation: "sprinkle",
+      },
+      {
+        icon: "🍋",
+        name: "Preserved lemon",
+        amount: "1, pulp removed, rind sliced",
+        animation: "slide",
+      },
+      {
+        icon: "🫒",
+        name: "Green olives",
+        amount: "1 cup",
+        animation: "drop",
+      },
+      {
+        icon: "💧",
+        name: "Olive oil",
+        amount: "3 tbsp",
+        animation: "pour",
+      },
+      {
+        icon: "💧",
+        name: "Water or stock",
+        amount: "1½ cups",
+        animation: "pour",
+      },
+    ],
+  },
+
+  /* 2. Classic Couscous with Seven Vegetables */
+  {
+    name: "Couscous with Seven Vegetables",
+    emoji: "🥕",
+    country: "morocco",
+    countryName: "Morocco",
+    meal: "lunch",
+    time: "1h 10m",
+    oven: "Steam · Medium heat",
+    difficulty: "Intermediate",
+    imageUrl:
+      "https://images.pexels.com/photos/4109991/pexels-photo-4109991.jpeg",
+    method:
+      "Steam the couscous until fluffy and cook vegetables in a fragrant broth, then serve piled high with sauce on top.",
+    ingredients: [
+      {
+        icon: "🥣",
+        name: "Medium couscous",
+        amount: "2 cups",
+        animation: "pour",
+      },
+      {
+        icon: "💧",
+        name: "Water",
+        amount: "2 cups (for couscous)",
+        animation: "pour",
+      },
+      {
+        icon: "🥕",
+        name: "Carrots",
+        amount: "2, cut into sticks",
+        animation: "slide",
+      },
+      {
+        icon: "🥔",
+        name: "Potatoes",
+        amount: "2, quartered",
+        animation: "drop",
+      },
+      {
+        icon: "🎃",
+        name: "Pumpkin or squash",
+        amount: "2 cups, chunks",
+        animation: "drop",
+      },
+      {
+        icon: "🥒",
+        name: "Zucchini",
+        amount: "2, halved lengthwise",
+        animation: "slide",
+      },
+      {
+        icon: "🥬",
+        name: "Cabbage",
+        amount: "2 wedges",
+        animation: "drop",
+      },
+      {
+        icon: "🧅",
+        name: "Onions",
+        amount: "2, sliced",
+        animation: "slide",
+      },
+      {
+        icon: "🧂",
+        name: "Ras el hanout",
+        amount: "2 tsp",
+        animation: "sprinkle",
+      },
+      {
+        icon: "💧",
+        name: "Olive oil",
+        amount: "3 tbsp",
+        animation: "pour",
+      },
+    ],
+  },
+
+  /* 3. Moroccan Harira Soup */
+  {
+    name: "Harira — Moroccan Tomato & Lentil Soup",
+    emoji: "🍲",
+    country: "morocco",
+    countryName: "Morocco",
+    meal: "dinner",
+    time: "1h",
+    oven: "Simmer · Medium-low",
+    difficulty: "Intermediate",
+    imageUrl:
+      "https://images.pexels.com/photos/3731474/pexels-photo-3731474.jpeg",
+    method:
+      "Simmer tomatoes, lentils, chickpeas, and herbs into a rich, comforting soup often served to break the fast.",
+    ingredients: [
+      {
+        icon: "🧅",
+        name: "Onion, finely chopped",
+        amount: "1 large",
+        animation: "slide",
+      },
+      {
+        icon: "🍅",
+        name: "Tomatoes, grated or crushed",
+        amount: "3 large",
+        animation: "pour",
+      },
+      {
+        icon: "🥫",
+        name: "Tomato paste",
+        amount: "2 tbsp",
+        animation: "pour",
+      },
+      {
+        icon: "🥣",
+        name: "Red lentils",
+        amount: "½ cup",
+        animation: "pour",
+      },
+      {
+        icon: "🥫",
+        name: "Cooked chickpeas",
+        amount: "1 cup",
+        animation: "drop",
+      },
+      {
+        icon: "🌿",
+        name: "Fresh cilantro",
+        amount: "½ cup, chopped",
+        animation: "sprinkle",
+      },
+      {
+        icon: "🌿",
+        name: "Fresh parsley",
+        amount: "½ cup, chopped",
+        animation: "sprinkle",
+      },
+      {
+        icon: "🧂",
+        name: "Ground ginger",
+        amount: "1 tsp",
+        animation: "sprinkle",
+      },
+      {
+        icon: "🧂",
+        name: "Cinnamon",
+        amount: "½ tsp",
+        animation: "sprinkle",
+      },
+      {
+        icon: "💧",
+        name: "Water or stock",
+        amount: "6 cups",
+        animation: "pour",
+      },
+    ],
+  },
+
+  /* 4. Moroccan Mint Tea */
+  {
+    name: "Traditional Moroccan Mint Tea",
+    emoji: "🍃",
+    country: "morocco",
+    countryName: "Morocco",
+    meal: "snack",
+    time: "15m",
+    oven: "Stovetop · Low",
+    difficulty: "Easy",
+    imageUrl:
+      "https://images.pexels.com/photos/4109992/pexels-photo-4109992.jpeg",
+    method:
+      "Brew green tea with fresh mint and sugar, then pour from high to create a light foam and mix flavors.",
+    ingredients: [
+      {
+        icon: "🍵",
+        name: "Chinese green tea",
+        amount: "1 tbsp",
+        animation: "pour",
+      },
+      {
+        icon: "🍃",
+        name: "Fresh mint leaves",
+        amount: "1 large handful",
+        animation: "sprinkle",
+      },
+      {
+        icon: "🧂",
+        name: "Sugar",
+        amount: "3–4 tbsp (to taste)",
+        animation: "pour",
+      },
+      {
+        icon: "💧",
+        name: "Boiling water",
+        amount: "1 liter",
+        animation: "pour",
+      },
+    ],
+  },
+
+  /* 5. Moroccan Briouat with Almonds & Honey */
+  {
+    name: "Almond & Honey Briouat",
+    emoji: "🥐",
+    country: "morocco",
+    countryName: "Morocco",
+    meal: "dessert",
+    time: "45m",
+    oven: "Fry or bake · Medium",
+    difficulty: "Intermediate",
+    imageUrl:
+      "https://images.pexels.com/photos/3731473/pexels-photo-3731473.jpeg",
+    method:
+      "Fill pastry sheets with almond paste, fry or bake until golden, then soak in warm honey and orange blossom water.",
+    ingredients: [
+      {
+        icon: "🥜",
+        name: "Ground almonds",
+        amount: "2 cups",
+        animation: "pour",
+      },
+      {
+        icon: "🧂",
+        name: "Sugar",
+        amount: "½ cup",
+        animation: "sprinkle",
+      },
+      {
+        icon: "🍊",
+        name: "Orange blossom water",
+        amount: "2 tbsp",
+        animation: "pour",
+      },
+      {
+        icon: "🧈",
+        name: "Melted butter",
+        amount: "3 tbsp",
+        animation: "pour",
+      },
+      {
+        icon: "🥚",
+        name: "Egg yolk",
+        amount: "1, for binding",
+        animation: "crack",
+      },
+      {
+        icon: "🥠",
+        name: "Warka or filo sheets",
+        amount: "10–12 sheets",
+        animation: "slide",
+      },
+      {
+        icon: "🍯",
+        name: "Honey",
+        amount: "1 cup, warmed",
+        animation: "pour",
+      },
+      {
+        icon: "🌻",
+        name: "Oil for frying",
+        amount: "As needed",
+        animation: "pour",
+      },
+    ],
+  },
+
+  /* 6. Moroccan Zaalouk (Eggplant & Tomato Dip) */
+  {
+    name: "Zaalouk — Eggplant & Tomato Dip",
+    emoji: "🍆",
+    country: "morocco",
+    countryName: "Morocco",
+    meal: "snack",
+    time: "35m",
+    oven: "Stovetop · Medium",
+    difficulty: "Easy",
+    imageUrl:
+      "https://images.pexels.com/photos/1437267/pexels-photo-1437267.jpeg",
+    method:
+      "Cook eggplant and tomatoes with garlic and spices, then mash into a smoky, silky dip served warm or at room temperature.",
+    ingredients: [
+      {
+        icon: "🍆",
+        name: "Eggplants",
+        amount: "2 medium, diced",
+        animation: "drop",
+      },
+      {
+        icon: "🍅",
+        name: "Tomatoes",
+        amount: "3, grated or chopped",
+        animation: "pour",
+      },
+      {
+        icon: "🧄",
+        name: "Garlic cloves",
+        amount: "3, minced",
+        animation: "sprinkle",
+      },
+      {
+        icon: "🧂",
+        name: "Paprika",
+        amount: "1 tsp",
+        animation: "sprinkle",
+      },
+      {
+        icon: "🧂",
+        name: "Cumin",
+        amount: "1 tsp",
+        animation: "sprinkle",
+      },
+      {
+        icon: "💧",
+        name: "Olive oil",
+        amount: "3–4 tbsp",
+        animation: "pour",
+      },
+      {
+        icon: "🌿",
+        name: "Fresh cilantro",
+        amount: "2 tbsp, chopped",
+        animation: "sprinkle",
+      },
+    ],
+  },
+
+  /* 7. Moroccan Rfissa with Lentils & Chicken */
+  {
+    name: "Rfissa — Chicken with Lentils & Trid",
+    emoji: "🍗",
+    country: "morocco",
+    countryName: "Morocco",
+    meal: "dinner",
+    time: "2h",
+    oven: "Simmer · Low",
+    difficulty: "Advanced",
+    imageUrl:
+      "https://images.pexels.com/photos/1437268/pexels-photo-1437268.jpeg",
+    method:
+      "Simmer chicken and lentils in a fenugreek-spiced broth, then serve over shredded msemen or trid pancakes.",
+    ingredients: [
+      {
+        icon: "🍗",
+        name: "Chicken pieces",
+        amount: "1 whole chicken, cut",
+        animation: "drop",
+      },
+      {
+        icon: "🥣",
+        name: "Green lentils",
+        amount: "1 cup, soaked",
+        animation: "pour",
+      },
+      {
+        icon: "🧅",
+        name: "Onions",
+        amount: "3 large, sliced",
+        animation: "slide",
+      },
+      {
+        icon: "🧂",
+        name: "Fenugreek seeds",
+        amount: "1 tbsp, soaked",
+        animation: "sprinkle",
+      },
+      {
+        icon: "🧂",
+        name: "Ras el hanout",
+        amount: "2 tsp",
+        animation: "sprinkle",
+      },
+      {
+        icon: "🥞",
+        name: "Trid or msemen",
+        amount: "8–10 pieces, shredded",
+        animation: "slide",
+      },
+      {
+        icon: "💧",
+        name: "Olive oil",
+        amount: "4 tbsp",
+        animation: "pour",
+      },
+      {
+        icon: "💧",
+        name: "Water or stock",
+        amount: "6 cups",
+        animation: "pour",
+      },
+    ],
+  },
+
+  /* 8. Moroccan Fish Chermoula Tagine */
+  {
+    name: "Fish Tagine with Chermoula",
+    emoji: "🐟",
+    country: "morocco",
+    countryName: "Morocco",
+    meal: "dinner",
+    time: "50m",
+    oven: "Bake or simmer · Medium",
+    difficulty: "Intermediate",
+    imageUrl:
+      "https://images.pexels.com/photos/3296273/pexels-photo-3296273.jpeg",
+    method:
+      "Marinate fish in chermoula, then cook gently over a bed of vegetables and potatoes in a tagine or pan.",
+    ingredients: [
+      {
+        icon: "🐟",
+        name: "Firm white fish fillets",
+        amount: "4 pieces",
+        animation: "drop",
+      },
+      {
+        icon: "🌿",
+        name: "Cilantro & parsley",
+        amount: "1 cup, chopped",
+        animation: "sprinkle",
+      },
+      {
+        icon: "🧄",
+        name: "Garlic cloves",
+        amount: "4, minced",
+        animation: "sprinkle",
+      },
+      {
+        icon: "🍋",
+        name: "Lemon juice",
+        amount: "3 tbsp",
+        animation: "pour",
+      },
+      {
+        icon: "🧂",
+        name: "Paprika & cumin",
+        amount: "1 tsp each",
+        animation: "sprinkle",
+      },
+      {
+        icon: "🥔",
+        name: "Potatoes",
+        amount: "2, sliced",
+        animation: "slide",
+      },
+      {
+        icon: "🌶️",
+        name: "Bell peppers",
+        amount: "1–2, sliced",
+        animation: "slide",
+      },
+      {
+        icon: "💧",
+        name: "Olive oil",
+        amount: "3 tbsp",
+        animation: "pour",
+      },
+    ],
+  },
+
+  /* 9. Moroccan Kefta Meatball Tagine with Eggs */
+  {
+    name: "Kefta Meatball Tagine with Eggs",
+    emoji: "🥚",
+    country: "morocco",
+    countryName: "Morocco",
+    meal: "dinner",
+    time: "45m",
+    oven: "Simmer · Medium",
+    difficulty: "Intermediate",
+    imageUrl:
+      "https://images.pexels.com/photos/3296274/pexels-photo-3296274.jpeg",
+    method:
+      "Simmer spiced meatballs in a tomato sauce, then crack eggs on top and cook until just set.",
+    ingredients: [
+      {
+        icon: "🥩",
+        name: "Ground beef or lamb",
+        amount: "500 g",
+        animation: "drop",
+      },
+      {
+        icon: "🧅",
+        name: "Onion, grated",
+        amount: "1 small",
+        animation: "slide",
+      },
+      {
+        icon: "🌿",
+        name: "Parsley & cilantro",
+        amount: "½ cup, chopped",
+        animation: "sprinkle",
+      },
+      {
+        icon: "🧂",
+        name: "Paprika & cumin",
+        amount: "1 tsp each",
+        animation: "sprinkle",
+      },
+      {
+        icon: "🍅",
+        name: "Tomato sauce",
+        amount: "2 cups",
+        animation: "pour",
+      },
+      {
+        icon: "🥚",
+        name: "Eggs",
+        amount: "4–5",
+        animation: "crack",
+      },
+      {
+        icon: "💧",
+        name: "Olive oil",
+        amount: "3 tbsp",
+        animation: "pour",
+      },
+    ],
+  },
+
+  /* 10. Moroccan Bissara (Fava Bean Dip) */
+  {
+    name: "Bissara — Fava Bean Dip",
+    emoji: "🥣",
+    country: "morocco",
+    countryName: "Morocco",
+    meal: "breakfast",
+    time: "50m",
+    oven: "Simmer · Medium-low",
+    difficulty: "Easy",
+    imageUrl:
+      "https://images.pexels.com/photos/3731475/pexels-photo-3731475.jpeg",
+    method:
+      "Cook dried fava beans until soft, then blend with garlic, olive oil, and cumin into a smooth, warming dip.",
+    ingredients: [
+      {
+        icon: "🥣",
+        name: "Dried split fava beans",
+        amount: "2 cups, soaked",
+        animation: "pour",
+      },
+      {
+        icon: "🧄",
+        name: "Garlic cloves",
+        amount: "3, minced",
+        animation: "sprinkle",
+      },
+      {
+        icon: "🧂",
+        name: "Cumin",
+        amount: "1½ tsp",
+        animation: "sprinkle",
+      },
+      {
+        icon: "💧",
+        name: "Olive oil",
+        amount: "4 tbsp, plus more to serve",
+        animation: "pour",
+      },
+      {
+        icon: "💧",
+        name: "Water",
+        amount: "6 cups",
+        animation: "pour",
+      },
+    ],
+  },
+
+  /* 11. Moroccan Msemen (Layered Flatbread) */
+  {
+    name: "Msemen — Layered Moroccan Flatbread",
+    emoji: "🥞",
+    country: "morocco",
+    countryName: "Morocco",
+    meal: "breakfast",
+    time: "1h",
+    oven: "Griddle · Medium",
+    difficulty: "Intermediate",
+    imageUrl:
+      "https://images.pexels.com/photos/3731476/pexels-photo-3731476.jpeg",
+    method:
+      "Knead a soft dough, fold with oil and semolina into layers, then cook on a hot griddle until golden and crisp.",
+    ingredients: [
+      {
+        icon: "🌾",
+        name: "Flour",
+        amount: "3 cups",
+        animation: "pour",
+      },
+      {
+        icon: "🌾",
+        name: "Fine semolina",
+        amount: "½ cup",
+        animation: "sprinkle",
+      },
+      {
+        icon: "🧂",
+        name: "Salt",
+        amount: "1 tsp",
+        animation: "sprinkle",
+      },
+      {
+        icon: "💧",
+        name: "Warm water",
+        amount: "1½–2 cups",
+        animation: "pour",
+      },
+      {
+        icon: "💧",
+        name: "Oil & melted butter",
+        amount: "For folding and cooking",
+        animation: "pour",
+      },
+    ],
+  },
+
+  /* 12. Moroccan Baghrir (Thousand-Hole Pancakes) */
+  {
+    name: "Baghrir — Thousand-Hole Pancakes",
+    emoji: "🫓",
+    country: "morocco",
+    countryName: "Morocco",
+    meal: "breakfast",
+    time: "40m",
+    oven: "Griddle · Medium-low",
+    difficulty: "Easy",
+    imageUrl:
+      "https://images.pexels.com/photos/3731477/pexels-photo-3731477.jpeg",
+    method:
+      "Blend a yeasted semolina batter, let it bubble, then cook only on one side to create many tiny holes.",
+    ingredients: [
+      {
+        icon: "🌾",
+        name: "Fine semolina",
+        amount: "2 cups",
+        animation: "pour",
+      },
+      {
+        icon: "🌾",
+        name: "Flour",
+        amount: "½ cup",
+        animation: "pour",
+      },
+      {
+        icon: "🧂",
+        name: "Sugar",
+        amount: "2 tbsp",
+        animation: "sprinkle",
+      },
+      {
+        icon: "🧂",
+        name: "Yeast",
+        amount: "2 tsp",
+        animation: "sprinkle",
+      },
+      {
+        icon: "💧",
+        name: "Warm water",
+        amount: "3 cups",
+        animation: "pour",
+      },
+      {
+        icon: "🍯",
+        name: "Honey & butter",
+        amount: "To serve",
+        animation: "pour",
+      },
+    ],
+  },
+
+  /* 13. Moroccan Pastilla with Chicken & Almonds */
+  {
+    name: "Chicken & Almond Pastilla",
+    emoji: "🥧",
+    country: "morocco",
+    countryName: "Morocco",
+    meal: "dinner",
+    time: "1h 30m",
+    oven: "Bake · 190°C",
+    difficulty: "Advanced",
+    imageUrl:
+      "https://images.pexels.com/photos/3731478/pexels-photo-3731478.jpeg",
+    method:
+      "Layer shredded spiced chicken, sweet almonds, and eggs between pastry sheets, then bake until crisp and dust with sugar and cinnamon.",
+    ingredients: [
+      {
+        icon: "🍗",
+        name: "Chicken, cooked & shredded",
+        amount: "3 cups",
+        animation: "drop",
+      },
+      {
+        icon: "🥜",
+        name: "Fried ground almonds",
+        amount: "2 cups",
+        animation: "pour",
+      },
+      {
+        icon: "🥚",
+        name: "Eggs, scrambled in sauce",
+        amount: "4",
+        animation: "crack",
+      },
+      {
+        icon: "🧂",
+        name: "Cinnamon & sugar",
+        amount: "To taste",
+        animation: "sprinkle",
+      },
+      {
+        icon: "🥠",
+        name: "Warka or filo sheets",
+        amount: "10–12 sheets",
+        animation: "slide",
+      },
+      {
+        icon: "🧈",
+        name: "Melted butter",
+        amount: "½ cup",
+        animation: "pour",
+      },
+    ],
+  },
+
+  /* 14. Moroccan Taktouka (Pepper & Tomato Salad) */
+  {
+    name: "Taktouka — Pepper & Tomato Salad",
+    emoji: "🌶️",
+    country: "morocco",
+    countryName: "Morocco",
+    meal: "snack",
+    time: "30m",
+    oven: "Stovetop · Medium",
+    difficulty: "Easy",
+    imageUrl:
+      "https://images.pexels.com/photos/1437269/pexels-photo-1437269.jpeg",
+    method:
+      "Roast or sauté peppers and tomatoes with garlic and spices, then mash lightly into a chunky salad.",
+    ingredients: [
+      {
+        icon: "🌶️",
+        name: "Green bell peppers",
+        amount: "3, roasted or sautéed",
+        animation: "slide",
+      },
+      {
+        icon: "🍅",
+        name: "Tomatoes",
+        amount: "3, grated or chopped",
+        animation: "pour",
+      },
+      {
+        icon: "🧄",
+        name: "Garlic cloves",
+        amount: "2, minced",
+        animation: "sprinkle",
+      },
+      {
+        icon: "🧂",
+        name: "Paprika & cumin",
+        amount: "1 tsp each",
+        animation: "sprinkle",
+      },
+      {
+        icon: "💧",
+        name: "Olive oil",
+        amount: "3 tbsp",
+        animation: "pour",
+      },
+    ],
+  },
+
+  /* 15. Moroccan Seffa Medfouna (Sweet Vermicelli with Chicken) */
+  {
+    name: "Seffa Medfouna — Sweet Vermicelli with Chicken",
+    emoji: "🍝",
+    country: "morocco",
+    countryName: "Morocco",
+    meal: "dinner",
+    time: "1h 10m",
+    oven: "Steam · Medium",
+    difficulty: "Intermediate",
+    imageUrl:
+      "https://images.pexels.com/photos/3731479/pexels-photo-3731479.jpeg",
+    method:
+      "Steam vermicelli until tender, sweeten with sugar and cinnamon, and mound over spiced chicken, garnished with almonds.",
+    ingredients: [
+      {
+        icon: "🍝",
+        name: "Vermicelli noodles",
+        amount: "500 g",
+        animation: "pour",
+      },
+      {
+        icon: "🍗",
+        name: "Chicken pieces",
+        amount: "1 small chicken",
+        animation: "drop",
+      },
+      {
+        icon: "🧅",
+        name: "Onions",
+        amount: "2, sliced",
+        animation: "slide",
+      },
+      {
+        icon: "🧂",
+        name: "Cinnamon & sugar",
+        amount: "To taste",
+        animation: "sprinkle",
+      },
+      {
+        icon: "🥜",
+        name: "Fried almonds",
+        amount: "1 cup",
+        animation: "drop",
+      },
+      {
+        icon: "💧",
+        name: "Olive oil & butter",
+        amount: "For cooking",
+        animation: "pour",
+      },
+    ],
+  },
+
+  /* 16. Moroccan Harcha (Semolina Pan Bread) */
+  {
+    name: "Harcha — Semolina Pan Bread",
+    emoji: "🫓",
+    country: "morocco",
+    countryName: "Morocco",
+    meal: "breakfast",
+    time: "30m",
+    oven: "Griddle · Medium",
+    difficulty: "Easy",
+    imageUrl:
+      "https://images.pexels.com/photos/3731480/pexels-photo-3731480.jpeg",
+    method:
+      "Mix semolina with butter and milk into a soft dough, shape into discs, and cook until golden on both sides.",
+    ingredients: [
+      {
+        icon: "🌾",
+        name: "Fine semolina",
+        amount: "2 cups",
+        animation: "pour",
+      },
+      {
+        icon: "🧈",
+        name: "Butter, softened",
+        amount: "4 tbsp",
+        animation: "pour",
+      },
+      {
+        icon: "🧂",
+        name: "Sugar & salt",
+        amount: "1 tbsp sugar, ½ tsp salt",
+        animation: "sprinkle",
+      },
+      {
+        icon: "🥛",
+        name: "Milk",
+        amount: "¾–1 cup",
+        animation: "pour",
+      },
+    ],
+  },
+
+  /* 17. Moroccan Chebakia (Sesame Honey Cookies) */
+  {
+    name: "Chebakia — Sesame Honey Cookies",
+    emoji: "🍯",
+    country: "morocco",
+    countryName: "Morocco",
+    meal: "dessert",
+    time: "1h 30m",
+    oven: "Fry · Medium",
+    difficulty: "Advanced",
+    imageUrl:
+      "https://images.pexels.com/photos/3731481/pexels-photo-3731481.jpeg",
+    method:
+      "Shape spiced dough into flower-like cookies, fry until golden, then soak in warm honey and sprinkle with sesame seeds.",
+    ingredients: [
+      {
+        icon: "🌾",
+        name: "Flour",
+        amount: "4 cups",
+        animation: "pour",
+      },
+      {
+        icon: "🥜",
+        name: "Sesame seeds, ground",
+        amount: "1 cup",
+        animation: "sprinkle",
+      },
+      {
+        icon: "🥜",
+        name: "Almonds, ground",
+        amount: "½ cup",
+        animation: "pour",
+      },
+      {
+        icon: "🧂",
+        name: "Anise, cinnamon",
+        amount: "2 tsp each",
+        animation: "sprinkle",
+      },
+      {
+        icon: "🍊",
+        name: "Orange blossom water",
+        amount: "3 tbsp",
+        animation: "pour",
+      },
+      {
+        icon: "🥚",
+        name: "Egg",
+        amount: "1",
+        animation: "crack",
+      },
+      {
+        icon: "🍯",
+        name: "Honey",
+        amount: "2 cups, warmed",
+        animation: "pour",
+      },
+      {
+        icon: "🌻",
+        name: "Oil for frying",
+        amount: "As needed",
+        animation: "pour",
+      },
+    ],
+  },
+
+  /* 18. Moroccan Loubia (White Bean Stew) */
+  {
+    name: "Loubia — Spiced White Bean Stew",
+    emoji: "🫘",
+    country: "morocco",
+    countryName: "Morocco",
+    meal: "lunch",
+    time: "1h",
+    oven: "Simmer · Medium-low",
+    difficulty: "Easy",
+    imageUrl:
+      "https://images.pexels.com/photos/3731482/pexels-photo-3731482.jpeg",
+    method:
+      "Simmer white beans with tomatoes, garlic, and spices into a thick, comforting stew served with bread.",
+    ingredients: [
+      {
+        icon: "🫘",
+        name: "Dried white beans",
+        amount: "2 cups, soaked",
+        animation: "pour",
+      },
+      {
+        icon: "🍅",
+        name: "Tomatoes, grated",
+        amount: "2 large",
+        animation: "pour",
+      },
+      {
+        icon: "🧄",
+        name: "Garlic cloves",
+        amount: "3, minced",
+        animation: "sprinkle",
+      },
+      {
+        icon: "🧂",
+        name: "Paprika & cumin",
+        amount: "1 tsp each",
+        animation: "sprinkle",
+      },
+      {
+        icon: "💧",
+        name: "Olive oil",
+        amount: "3 tbsp",
+        animation: "pour",
+      },
+      {
+        icon: "💧",
+        name: "Water",
+        amount: "6 cups",
+        animation: "pour",
+      },
+    ],
+  },
+
+  /* 19. Moroccan Rghaif Stuffed with Kefta */
+  {
+    name: "Stuffed Rghaif with Kefta",
+    emoji: "🥙",
+    country: "morocco",
+    countryName: "Morocco",
+    meal: "snack",
+    time: "1h",
+    oven: "Griddle · Medium",
+    difficulty: "Intermediate",
+    imageUrl:
+      "https://images.pexels.com/photos/3731483/pexels-photo-3731483.jpeg",
+    method:
+      "Fill thin layered dough with spiced ground meat and onions, fold into squares, and cook until crisp and golden.",
+    ingredients: [
+      {
+        icon: "🌾",
+        name: "Flour",
+        amount: "3 cups",
+        animation: "pour",
+      },
+      {
+        icon: "🥩",
+        name: "Ground beef",
+        amount: "400 g",
+        animation: "drop",
+      },
+      {
+        icon: "🧅",
+        name: "Onion, finely chopped",
+        amount: "1 medium",
+        animation: "slide",
+      },
+      {
+        icon: "🌿",
+        name: "Parsley",
+        amount: "¼ cup, chopped",
+        animation: "sprinkle",
+      },
+      {
+        icon: "🧂",
+        name: "Paprika & cumin",
+        amount: "1 tsp each",
+        animation: "sprinkle",
+      },
+      {
+        icon: "💧",
+        name: "Oil & butter",
+        amount: "For folding and cooking",
+        animation: "pour",
+      },
+    ],
+  },
+
+  /* 20. Moroccan Orange & Cinnamon Salad */
+  {
+    name: "Orange & Cinnamon Dessert Salad",
+    emoji: "🍊",
+    country: "morocco",
+    countryName: "Morocco",
+    meal: "dessert",
+    time: "10m",
+    oven: "No cook",
+    difficulty: "Easy",
+    imageUrl:
+      "https://images.pexels.com/photos/3731484/pexels-photo-3731484.jpeg",
+    method:
+      "Slice fresh oranges, drizzle with orange blossom water, and sprinkle with cinnamon and sugar for a light dessert.",
+    ingredients: [
+      {
+        icon: "🍊",
+        name: "Oranges",
+        amount: "4, peeled and sliced",
+        animation: "slide",
+      },
+      {
+        icon: "🍊",
+        name: "Orange blossom water",
+        amount: "1–2 tbsp",
+        animation: "pour",
+      },
+      {
+        icon: "🧂",
+        name: "Sugar",
+        amount: "2 tbsp",
+        animation: "sprinkle",
+      },
+      {
+        icon: "🧂",
+        name: "Ground cinnamon",
+        amount: "1 tsp",
+        animation: "sprinkle",
+      },
+    ],
+  },
+];
+/* ------------------------------------------------------------
+   PART 4 / 4 — EXTRA WORLD RECIPES (30+)
+   Append directly AFTER PART 3, still inside the same <script> tag.
+------------------------------------------------------------ */
+
+const moreRecipes = [
+  /* 21. Japan — Chicken Teriyaki Bowl */
+  {
+    name: "Chicken Teriyaki Rice Bowl",
+    emoji: "🍱",
+    country: "japan",
+    countryName: "Japan",
+    meal: "dinner",
+    time: "35m",
+    oven: "Stovetop · Medium",
+    difficulty: "Easy",
+    imageUrl:
+      "https://images.pexels.com/photos/3296272/pexels-photo-3296272.jpeg",
+    method:
+      "Sear chicken, glaze with teriyaki sauce, and serve over steamed rice with sesame and scallions.",
+    ingredients: [
+      { icon: "🍗", name: "Chicken thighs", amount: "400 g, sliced", animation: "drop" },
+      { icon: "🍚", name: "Steamed rice", amount: "2 cups", animation: "pour" },
+      { icon: "🥢", name: "Soy sauce & mirin", amount: "¼ cup each", animation: "pour" },
+      { icon: "🍯", name: "Sugar or honey", amount: "2 tbsp", animation: "sprinkle" },
+      { icon: "🌿", name: "Sesame & scallions", amount: "To garnish", animation: "sprinkle" },
+    ],
+  },
+
+  /* 22. Japan — Ramen with Soft Egg */
+  {
+    name: "Comfort Ramen with Soft Egg",
+    emoji: "🍜",
+    country: "japan",
+    countryName: "Japan",
+    meal: "dinner",
+    time: "40m",
+    oven: "Simmer · Medium",
+    difficulty: "Intermediate",
+    imageUrl:
+      "https://images.pexels.com/photos/3296270/pexels-photo-3296270.jpeg",
+    method:
+      "Simmer a soy-based broth, cook noodles, and top with soft egg, sliced meat, and vegetables.",
+    ingredients: [
+      { icon: "🍜", name: "Ramen noodles", amount: "2 portions", animation: "pour" },
+      { icon: "🍗", name: "Sliced chicken or pork", amount: "200 g", animation: "drop" },
+      { icon: "🥚", name: "Soft-boiled eggs", amount: "2", animation: "crack" },
+      { icon: "🥬", name: "Greens & corn", amount: "1 cup", animation: "sprinkle" },
+      { icon: "🥢", name: "Soy-based broth", amount: "4 cups", animation: "pour" },
+    ],
+  },
+
+  /* 23. USA — Classic Cheeseburger */
+  {
+    name: "Classic American Cheeseburger",
+    emoji: "🍔",
+    country: "usa",
+    countryName: "United States",
+    meal: "lunch",
+    time: "25m",
+    oven: "Grill · Medium-high",
+    difficulty: "Easy",
+    imageUrl:
+      "https://images.pexels.com/photos/1639562/pexels-photo-1639562.jpeg",
+    method:
+      "Grill seasoned beef patties, melt cheese on top, and assemble with lettuce, tomato, and pickles in a toasted bun.",
+    ingredients: [
+      { icon: "🥩", name: "Ground beef", amount: "400 g", animation: "drop" },
+      { icon: "🧀", name: "Cheddar slices", amount: "4 slices", animation: "drop" },
+      { icon: "🥬", name: "Lettuce & tomato", amount: "To layer", animation: "slide" },
+      { icon: "🥯", name: "Burger buns", amount: "4", animation: "slide" },
+      { icon: "🧂", name: "Salt & pepper", amount: "To taste", animation: "sprinkle" },
+    ],
+  },
+
+  /* 24. USA — Mac and Cheese */
+  {
+    name: "Creamy Mac and Cheese",
+    emoji: "🧀",
+    country: "usa",
+    countryName: "United States",
+    meal: "dinner",
+    time: "35m",
+    oven: "Bake · 180°C",
+    difficulty: "Easy",
+    imageUrl:
+      "https://images.pexels.com/photos/1437265/pexels-photo-1437265.jpeg",
+    method:
+      "Cook pasta, make a cheese sauce with milk and butter, mix together, and bake until bubbly and golden.",
+    ingredients: [
+      { icon: "🍝", name: "Macaroni pasta", amount: "300 g", animation: "pour" },
+      { icon: "🧀", name: "Grated cheese", amount: "2 cups", animation: "pour" },
+      { icon: "🥛", name: "Milk", amount: "2 cups", animation: "pour" },
+      { icon: "🧈", name: "Butter & flour", amount: "3 tbsp each", animation: "pour" },
+      { icon: "🧂", name: "Salt & pepper", amount: "To taste", animation: "sprinkle" },
+    ],
+  },
+
+  /* 25. Italy — Margherita Pizza */
+  {
+    name: "Margherita Pizza",
+    emoji: "🍕",
+    country: "italy",
+    countryName: "Italy",
+    meal: "dinner",
+    time: "1h",
+    oven: "Bake · 250°C",
+    difficulty: "Intermediate",
+    imageUrl:
+      "https://images.pexels.com/photos/4109083/pexels-photo-4109083.jpeg",
+    method:
+      "Stretch pizza dough, top with tomato sauce, mozzarella, and basil, then bake in a very hot oven.",
+    ingredients: [
+      { icon: "🍞", name: "Pizza dough", amount: "1 ball", animation: "slide" },
+      { icon: "🍅", name: "Tomato sauce", amount: "½ cup", animation: "pour" },
+      { icon: "🧀", name: "Mozzarella", amount: "150 g", animation: "drop" },
+      { icon: "🌿", name: "Fresh basil", amount: "Handful", animation: "sprinkle" },
+      { icon: "💧", name: "Olive oil", amount: "1 tbsp", animation: "pour" },
+    ],
+  },
+
+  /* 26. Italy — Creamy Risotto */
+  {
+    name: "Creamy Parmesan Risotto",
+    emoji: "🍚",
+    country: "italy",
+    countryName: "Italy",
+    meal: "dinner",
+    time: "40m",
+    oven: "Stovetop · Low",
+    difficulty: "Intermediate",
+    imageUrl:
+      "https://images.pexels.com/photos/6287528/pexels-photo-6287528.jpeg",
+    method:
+      "Toast rice in butter, slowly add hot stock while stirring, then finish with parmesan and a knob of butter.",
+    ingredients: [
+      { icon: "🍚", name: "Arborio rice", amount: "1 cup", animation: "pour" },
+      { icon: "🧈", name: "Butter", amount: "3 tbsp", animation: "pour" },
+      { icon: "🥣", name: "Hot stock", amount: "4 cups", animation: "pour" },
+      { icon: "🧀", name: "Parmesan", amount: "½ cup, grated", animation: "sprinkle" },
+      { icon: "🧅", name: "Onion, minced", amount: "1 small", animation: "slide" },
+    ],
+  },
+
+  /* 27. Mexico — Chicken Tacos */
+  {
+    name: "Chicken Tacos with Salsa",
+    emoji: "🌮",
+    country: "mexico",
+    countryName: "Mexico",
+    meal: "dinner",
+    time: "30m",
+    oven: "Stovetop · Medium",
+    difficulty: "Easy",
+    imageUrl:
+      "https://images.pexels.com/photos/461198/pexels-photo-461198.jpeg",
+    method:
+      "Season and cook chicken, slice, and serve in warm tortillas with salsa, lime, and cilantro.",
+    ingredients: [
+      { icon: "🍗", name: "Chicken breast", amount: "400 g", animation: "drop" },
+      { icon: "🌮", name: "Tortillas", amount: "8 small", animation: "slide" },
+      { icon: "🍅", name: "Tomato salsa", amount: "½ cup", animation: "pour" },
+      { icon: "🍋", name: "Lime wedges", amount: "To serve", animation: "slide" },
+      { icon: "🌿", name: "Cilantro", amount: "2 tbsp, chopped", animation: "sprinkle" },
+    ],
+  },
+
+  /* 28. Mexico — Guacamole */
+  {
+    name: "Fresh Guacamole",
+    emoji: "🥑",
+    country: "mexico",
+    countryName: "Mexico",
+    meal: "snack",
+    time: "15m",
+    oven: "No cook",
+    difficulty: "Easy",
+    imageUrl:
+      "https://images.pexels.com/photos/1437266/pexels-photo-1437266.jpeg",
+    method:
+      "Mash ripe avocados with lime, onion, tomato, and cilantro into a chunky dip.",
+    ingredients: [
+      { icon: "🥑", name: "Ripe avocados", amount: "3", animation: "drop" },
+      { icon: "🧅", name: "Red onion, minced", amount: "¼ cup", animation: "slide" },
+      { icon: "🍅", name: "Tomato, diced", amount: "½ cup", animation: "slide" },
+      { icon: "🍋", name: "Lime juice", amount: "2 tbsp", animation: "pour" },
+      { icon: "🌿", name: "Cilantro & salt", amount: "To taste", animation: "sprinkle" },
+    ],
+  },
+
+  /* 29. India — Butter Chicken */
+  {
+    name: "Butter Chicken (Murgh Makhani)",
+    emoji: "🍛",
+    country: "india",
+    countryName: "India",
+    meal: "dinner",
+    time: "50m",
+    oven: "Simmer · Medium",
+    difficulty: "Intermediate",
+    imageUrl:
+      "https://images.pexels.com/photos/1117862/pexels-photo-1117862.jpeg",
+    method:
+      "Marinate chicken in yogurt and spices, cook in a creamy tomato sauce enriched with butter.",
+    ingredients: [
+      { icon: "🍗", name: "Chicken pieces", amount: "500 g", animation: "drop" },
+      { icon: "🥛", name: "Yogurt", amount: "½ cup", animation: "pour" },
+      { icon: "🍅", name: "Tomato puree", amount: "1 cup", animation: "pour" },
+      { icon: "🧈", name: "Butter & cream", amount: "¼ cup each", animation: "pour" },
+      { icon: "🧂", name: "Garam masala", amount: "2 tsp", animation: "sprinkle" },
+    ],
+  },
+
+  /* 30. India — Vegetable Biryani */
+  {
+    name: "Fragrant Vegetable Biryani",
+    emoji: "🍚",
+    country: "india",
+    countryName: "India",
+    meal: "dinner",
+    time: "1h",
+    oven: "Steam · Low",
+    difficulty: "Intermediate",
+    imageUrl:
+      "https://images.pexels.com/photos/1117861/pexels-photo-1117861.jpeg",
+    method:
+      "Layer parboiled rice with spiced vegetables and herbs, then steam until fluffy and aromatic.",
+    ingredients: [
+      { icon: "🍚", name: "Basmati rice", amount: "2 cups", animation: "pour" },
+      { icon: "🥕", name: "Mixed vegetables", amount: "2 cups", animation: "drop" },
+      { icon: "🧅", name: "Onions, fried", amount: "1 cup", animation: "sprinkle" },
+      { icon: "🧂", name: "Biryani spices", amount: "2 tsp", animation: "sprinkle" },
+      { icon: "🌿", name: "Mint & cilantro", amount: "½ cup", animation: "sprinkle" },
+    ],
+  },
+
+  /* 31. France — Coq au Vin */
+  {
+    name: "Coq au Vin",
+    emoji: "🍷",
+    country: "france",
+    countryName: "France",
+    meal: "dinner",
+    time: "1h 30m",
+    oven: "Simmer · Low",
+    difficulty: "Advanced",
+    imageUrl:
+      "https://images.pexels.com/photos/4109993/pexels-photo-4109993.jpeg",
+    method:
+      "Slowly braise chicken with red wine, mushrooms, and bacon until tender and deeply flavored.",
+    ingredients: [
+      { icon: "🍗", name: "Chicken pieces", amount: "1 kg", animation: "drop" },
+      { icon: "🍷", name: "Red wine", amount: "2 cups", animation: "pour" },
+      { icon: "🍄", name: "Mushrooms", amount: "1 cup", animation: "drop" },
+      { icon: "🥓", name: "Bacon", amount: "100 g", animation: "drop" },
+      { icon: "🧅", name: "Onions & garlic", amount: "To taste", animation: "slide" },
+    ],
+  },
+
+  /* 32. France — Crêpes */
+  {
+    name: "Sweet French Crêpes",
+    emoji: "🥞",
+    country: "france",
+    countryName: "France",
+    meal: "dessert",
+    time: "30m",
+    oven: "Pan · Medium",
+    difficulty: "Easy",
+    imageUrl:
+      "https://images.pexels.com/photos/4109994/pexels-photo-4109994.jpeg",
+    method:
+      "Whisk a thin batter of eggs, milk, and flour, then cook in a lightly buttered pan and fill with your favorite toppings.",
+    ingredients: [
+      { icon: "🥚", name: "Eggs", amount: "3", animation: "crack" },
+      { icon: "🥛", name: "Milk", amount: "2 cups", animation: "pour" },
+      { icon: "🌾", name: "Flour", amount: "1½ cups", animation: "pour" },
+      { icon: "🧈", name: "Butter, melted", amount: "3 tbsp", animation: "pour" },
+      { icon: "🧂", name: "Sugar & salt", amount: "To taste", animation: "sprinkle" },
+    ],
+  },
+
+  /* 33. Spain — Paella */
+  {
+    name: "Seafood Paella",
+    emoji: "🥘",
+    country: "spain",
+    countryName: "Spain",
+    meal: "dinner",
+    time: "1h",
+    oven: "Stovetop · Medium",
+    difficulty: "Advanced",
+    imageUrl:
+      "https://images.pexels.com/photos/461198/pexels-photo-461198.jpeg",
+    method:
+      "Cook rice with saffron, stock, and vegetables, then add seafood and cook until just done with a crispy socarrat.",
+    ingredients: [
+      { icon: "🍚", name: "Paella rice", amount: "2 cups", animation: "pour" },
+      { icon: "🦐", name: "Shrimp & mussels", amount: "400 g", animation: "drop" },
+      { icon: "🌶️", name: "Bell peppers", amount: "1 cup, sliced", animation: "slide" },
+      { icon: "🧂", name: "Saffron & paprika", amount: "To taste", animation: "sprinkle" },
+      { icon: "🥣", name: "Stock", amount: "4 cups", animation: "pour" },
+    ],
+  },
+
+  /* 34. Spain — Tortilla Española */
+  {
+    name: "Spanish Potato Tortilla",
+    emoji: "🥔",
+    country: "spain",
+    countryName: "Spain",
+    meal: "lunch",
+    time: "40m",
+    oven: "Pan · Medium-low",
+    difficulty: "Intermediate",
+    imageUrl:
+      "https://images.pexels.com/photos/461198/pexels-photo-461198.jpeg?auto=compress",
+    method:
+      "Slowly cook potatoes and onions in oil, then bind with eggs and cook into a thick omelette.",
+    ingredients: [
+      { icon: "🥔", name: "Potatoes", amount: "4, sliced", animation: "slide" },
+      { icon: "🧅", name: "Onion", amount: "1 large, sliced", animation: "slide" },
+      { icon: "🥚", name: "Eggs", amount: "5–6", animation: "crack" },
+      { icon: "💧", name: "Olive oil", amount: "For cooking", animation: "pour" },
+      { icon: "🧂", name: "Salt", amount: "To taste", animation: "sprinkle" },
+    ],
+  },
+
+  /* 35. Turkey — Menemen */
+  {
+    name: "Menemen — Turkish Eggs with Peppers",
+    emoji: "🍳",
+    country: "turkey",
+    countryName: "Turkey",
+    meal: "breakfast",
+    time: "20m",
+    oven: "Pan · Medium",
+    difficulty: "Easy",
+    imageUrl:
+      "https://images.pexels.com/photos/4109995/pexels-photo-4109995.jpeg",
+    method:
+      "Sauté peppers and tomatoes, then gently scramble eggs into the mixture for a soft, saucy breakfast.",
+    ingredients: [
+      { icon: "🌶️", name: "Green peppers", amount: "2, sliced", animation: "slide" },
+      { icon: "🍅", name: "Tomatoes", amount: "2, chopped", animation: "pour" },
+      { icon: "🥚", name: "Eggs", amount: "3–4", animation: "crack" },
+      { icon: "💧", name: "Olive oil", amount: "2 tbsp", animation: "pour" },
+      { icon: "🧂", name: "Salt & pepper", amount: "To taste", animation: "sprinkle" },
+    ],
+  },
+
+  /* 36. Turkey — Simit */
+  {
+    name: "Simit — Sesame Bread Rings",
+    emoji: "🥯",
+    country: "turkey",
+    countryName: "Turkey",
+    meal: "snack",
+    time: "1h 15m",
+    oven: "Bake · 200°C",
+    difficulty: "Intermediate",
+    imageUrl:
+      "https://images.pexels.com/photos/4109996/pexels-photo-4109996.jpeg",
+    method:
+      "Shape yeasted dough into rings, dip in molasses water, coat with sesame seeds, and bake until deep golden.",
+    ingredients: [
+      { icon: "🌾", name: "Flour", amount: "3 cups", animation: "pour" },
+      { icon: "🧂", name: "Yeast & sugar", amount: "2 tsp each", animation: "sprinkle" },
+      { icon: "💧", name: "Water", amount: "1¼ cups", animation: "pour" },
+      { icon: "🍯", name: "Grape molasses", amount: "3 tbsp", animation: "pour" },
+      { icon: "🥜", name: "Sesame seeds", amount: "½ cup", animation: "sprinkle" },
+    ],
+  },
+
+  /* 37. Thailand — Pad Thai */
+  {
+    name: "Pad Thai with Shrimp",
+    emoji: "🍤",
+    country: "thailand",
+    countryName: "Thailand",
+    meal: "dinner",
+    time: "30m",
+    oven: "Wok · High heat",
+    difficulty: "Intermediate",
+    imageUrl:
+      "https://images.pexels.com/photos/461198/pexels-photo-461198.jpeg?auto=compress&cs=tinysrgb",
+    method:
+      "Stir-fry rice noodles with shrimp, egg, tamarind sauce, and bean sprouts, then top with peanuts.",
+    ingredients: [
+      { icon: "🍜", name: "Rice noodles", amount: "200 g", animation: "pour" },
+      { icon: "🦐", name: "Shrimp", amount: "200 g", animation: "drop" },
+      { icon: "🥚", name: "Egg", amount: "1–2", animation: "crack" },
+      { icon: "🥜", name: "Crushed peanuts", amount: "¼ cup", animation: "sprinkle" },
+      { icon: "🍋", name: "Lime & tamarind sauce", amount: "To taste", animation: "pour" },
+    ],
+  },
+
+  /* 38. Thailand — Green Curry */
+  {
+    name: "Thai Green Curry",
+    emoji: "🥘",
+    country: "thailand",
+    countryName: "Thailand",
+    meal: "dinner",
+    time: "40m",
+    oven: "Simmer · Medium",
+    difficulty: "Intermediate",
+    imageUrl:
+      "https://images.pexels.com/photos/461198/pexels-photo-461198.jpeg?auto=compress&cs=tinysrgb&dpr=2",
+    method:
+      "Simmer green curry paste with coconut milk, vegetables, and your choice of protein until fragrant.",
+    ingredients: [
+      { icon: "🥥", name: "Coconut milk", amount: "2 cups", animation: "pour" },
+      { icon: "🥦", name: "Mixed vegetables", amount: "2 cups", animation: "drop" },
+      { icon: "🍗", name: "Chicken or tofu", amount: "300 g", animation: "drop" },
+      { icon: "🧂", name: "Green curry paste", amount: "2–3 tbsp", animation: "sprinkle" },
+      { icon: "🌿", name: "Thai basil", amount: "Handful", animation: "sprinkle" },
+    ],
+  },
+
+  /* 39. Korea — Bibimbap */
+  {
+    name: "Bibimbap Rice Bowl",
+    emoji: "🥗",
+    country: "korea",
+    countryName: "South Korea",
+    meal: "lunch",
+    time: "40m",
+    oven: "Stovetop · Medium",
+    difficulty: "Intermediate",
+    imageUrl:
+      "https://images.pexels.com/photos/1437264/pexels-photo-1437264.jpeg",
+    method:
+      "Arrange seasoned vegetables, meat, and a fried egg over rice, then mix with gochujang sauce.",
+    ingredients: [
+      { icon: "🍚", name: "Steamed rice", amount: "2 cups", animation: "pour" },
+      { icon: "🥕", name: "Assorted vegetables", amount: "2 cups", animation: "drop" },
+      { icon: "🥩", name: "Beef strips", amount: "200 g", animation: "drop" },
+      { icon: "🥚", name: "Fried egg", amount: "1", animation: "crack" },
+      { icon: "🌶️", name: "Gochujang sauce", amount: "2 tbsp", animation: "pour" },
+    ],
+  },
+
+  /* 40. Korea — Kimchi Fried Rice */
+  {
+    name: "Kimchi Fried Rice",
+    emoji: "🍚",
+    country: "korea",
+    countryName: "South Korea",
+    meal: "dinner",
+    time: "25m",
+    oven: "Pan · Medium-high",
+    difficulty: "Easy",
+    imageUrl:
+      "https://images.pexels.com/photos/1437263/pexels-photo-1437263.jpeg",
+    method:
+      "Stir-fry kimchi with rice, seasonings, and optional meat, then top with a fried egg.",
+    ingredients: [
+      { icon: "🍚", name: "Cooked rice", amount: "2 cups", animation: "pour" },
+      { icon: "🥬", name: "Kimchi", amount: "1 cup, chopped", animation: "drop" },
+      { icon: "🥩", name: "Bacon or ham", amount: "100 g", animation: "drop" },
+      { icon: "🥚", name: "Egg", amount: "1", animation: "crack" },
+      { icon: "🧂", name: "Soy sauce & sesame oil", amount: "To taste", animation: "pour" },
+    ],
+  },
+
+  /* 41. Greece — Greek Salad */
+  {
+    name: "Classic Greek Salad",
+    emoji: "🥗",
+    country: "greece",
+    countryName: "Greece",
+    meal: "lunch",
+    time: "15m",
+    oven: "No cook",
+    difficulty: "Easy",
+    imageUrl:
+      "https://images.pexels.com/photos/1437262/pexels-photo-1437262.jpeg",
+    method:
+      "Combine tomatoes, cucumber, onion, olives, and feta, then dress with olive oil and oregano.",
+    ingredients: [
+      { icon: "🍅", name: "Tomatoes", amount: "2, chopped", animation: "slide" },
+      { icon: "🥒", name: "Cucumber", amount: "1, sliced", animation: "slide" },
+      { icon: "🧅", name: "Red onion", amount: "½, sliced", animation: "slide" },
+      { icon: "🫒", name: "Olives & feta", amount: "½ cup each", animation: "drop" },
+      { icon: "💧", name: "Olive oil & oregano", amount: "To taste", animation: "pour" },
+    ],
+  },
+
+  /* 42. Greece — Moussaka */
+  {
+    name: "Moussaka with Eggplant",
+    emoji: "🍆",
+    country: "greece",
+    countryName: "Greece",
+    meal: "dinner",
+    time: "1h 20m",
+    oven: "Bake · 190°C",
+    difficulty: "Advanced",
+    imageUrl:
+      "https://images.pexels.com/photos/1437261/pexels-photo-1437261.jpeg",
+    method:
+      "Layer fried eggplant with spiced meat sauce and béchamel, then bake until golden and set.",
+    ingredients: [
+      { icon: "🍆", name: "Eggplant slices", amount: "2 large", animation: "slide" },
+      { icon: "🥩", name: "Ground beef or lamb", amount: "500 g", animation: "drop" },
+      { icon: "🍅", name: "Tomato sauce", amount: "1 cup", animation: "pour" },
+      { icon: "🥛", name: "Béchamel sauce", amount: "2 cups", animation: "pour" },
+      { icon: "🧂", name: "Spices & salt", amount: "To taste", animation: "sprinkle" },
+    ],
+  },
+
+  /* 43. Brazil — Feijoada */
+  {
+    name: "Feijoada — Black Bean Stew",
+    emoji: "🫘",
+    country: "brazil",
+    countryName: "Brazil",
+    meal: "dinner",
+    time: "2h",
+    oven: "Simmer · Low",
+    difficulty: "Advanced",
+    imageUrl:
+      "https://images.pexels.com/photos/1437260/pexels-photo-1437260.jpeg",
+    method:
+      "Slowly cook black beans with assorted pork cuts and sausages into a rich, hearty stew.",
+    ingredients: [
+      { icon: "🫘", name: "Black beans", amount: "2 cups, soaked", animation: "pour" },
+      { icon: "🥓", name: "Pork & sausage", amount: "500 g", animation: "drop" },
+      { icon: "🧅", name: "Onion & garlic", amount: "To taste", animation: "slide" },
+      { icon: "🧂", name: "Bay leaves & salt", amount: "To taste", animation: "sprinkle" },
+      { icon: "🍚", name: "Rice to serve", amount: "As desired", animation: "pour" },
+    ],
+  },
+
+  /* 44. Brazil — Pão de Queijo */
+  {
+    name: "Pão de Queijo — Cheese Bread",
+    emoji: "🧀",
+    country: "brazil",
+    countryName: "Brazil",
+    meal: "snack",
+    time: "35m",
+    oven: "Bake · 190°C",
+    difficulty: "Easy",
+    imageUrl:
+      "https://images.pexels.com/photos/1437259/pexels-photo-1437259.jpeg",
+    method:
+      "Blend tapioca flour, milk, oil, and cheese into a sticky dough, shape into balls, and bake.",
+    ingredients: [
+      { icon: "🥛", name: "Milk", amount: "1 cup", animation: "pour" },
+      { icon: "💧", name: "Oil", amount: "¼ cup", animation: "pour" },
+      { icon: "🌾", name: "Tapioca flour", amount: "2 cups", animation: "pour" },
+      { icon: "🧀", name: "Grated cheese", amount: "1½ cups", animation: "sprinkle" },
+      { icon: "🥚", name: "Eggs", amount: "2", animation: "crack" },
+    ],
+  },
+
+  /* 45. Lebanon — Hummus */
+  {
+    name: "Creamy Hummus",
+    emoji: "🥙",
+    country: "lebanon",
+    countryName: "Lebanon",
+    meal: "snack",
+    time: "20m",
+    oven: "No cook",
+    difficulty: "Easy",
+    imageUrl:
+      "https://images.pexels.com/photos/1437258/pexels-photo-1437258.jpeg",
+    method:
+      "Blend chickpeas with tahini, lemon, garlic, and olive oil into a smooth dip.",
+    ingredients: [
+      { icon: "🥫", name: "Cooked chickpeas", amount: "2 cups", animation: "pour" },
+      { icon: "🥄", name: "Tahini", amount: "¼ cup", animation: "pour" },
+      { icon: "🍋", name: "Lemon juice", amount: "3 tbsp", animation: "pour" },
+      { icon: "🧄", name: "Garlic clove", amount: "1–2", animation: "sprinkle" },
+      { icon: "💧", name: "Olive oil", amount: "3 tbsp", animation: "pour" },
+    ],
+  },
+
+  /* 46. Lebanon — Tabbouleh */
+  {
+    name: "Tabbouleh Salad",
+    emoji: "🥗",
+    country: "lebanon",
+    countryName: "Lebanon",
+    meal: "lunch",
+    time: "25m",
+    oven: "No cook",
+    difficulty: "Easy",
+    imageUrl:
+      "https://images.pexels.com/photos/1437257/pexels-photo-1437257.jpeg",
+    method:
+      "Finely chop parsley, mint, tomato, and onion, then mix with soaked bulgur and lemon dressing.",
+    ingredients: [
+      { icon: "🌿", name: "Parsley & mint", amount: "2 cups, chopped", animation: "sprinkle" },
+      { icon: "🍅", name: "Tomatoes", amount: "2, diced", animation: "slide" },
+      { icon: "🧅", name: "Green onion", amount: "2 stalks", animation: "slide" },
+      { icon: "🌾", name: "Fine bulgur", amount: "½ cup, soaked", animation: "pour" },
+      { icon: "🍋", name: "Lemon & olive oil", amount: "To taste", animation: "pour" },
+    ],
+  },
+];
+
+/* Merge world recipes into main array */
+recipesData.push(...moreRecipes);
+</script>
 </body>
 </html>
